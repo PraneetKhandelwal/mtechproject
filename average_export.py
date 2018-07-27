@@ -1,3 +1,4 @@
+# This file is used for obtaining the export series present in the data folder
 from datetime import datetime
 import pandas as pd
 import numpy as np

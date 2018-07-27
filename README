@@ -1,0 +1,16 @@
+1. This folder all the scripts used for this project.
+2. You will need python to run these scripts.
+3. The files datadownload.py, script_crude_oil.py, script_export.py, script_fuel_price.py, downloadnewspaperdata.py are used to download required data.
+	(i) datadownlaod.py: For downlaoding data from agamarknet website
+	(ii) script_crude_oil.py: Downloading crude oil data
+	(iii) script_export.py: Downloading export of onions data
+	(iv) script_fuel_price.py: Downloading fuel price data 
+	(v) downloadnewspaperdata.py: Downloading newspaper data from times of india archives
+4. The files average_export.py, averagemandi.py, averagerainfall.py, averageretail.py, cpimonthlyseries.py, fuelprice.py, oilmonthlyseries.py, rainfallmonthly.py are used to read the downloaded and make them available in a usable format.
+5. The files find_normal_step2.py and find_normal_semi_supervised.py are used for creating normal periods for general scenario and semi supervised settign respectively.
+6. The files semi_supervised.py, step1_binary.py, step1_first_principle.py, step2_multi.py, supervised_step2.py and combined_step1_step2.py are used for performing quantitative analysis.
+7. The files relation_mandis.py, error_analysis_step1.py, error_analysis_step2.py, mandicriteria.py, linear_reg2.py are used for performing different qualitative analysis.
+8. To run these files, make sure they are in the same folder(because of the dependencies) and the 'data' folder should be in the same folder as these files. The command to run is python <filename>
+9. The extra folder contains all the files that were used for varios experiments and are just provided if need for some reference.
+10. The folder arima_models contain all the data files and scripts to run the univariate time series models.
+11. Use the document strings provided with each function to get the idea of the working

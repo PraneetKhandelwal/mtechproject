@@ -27,6 +27,7 @@ This file checks the accuracies for only four classes of periods - Hoarding, Wea
 delhilabels = [2,4,1,3,1,2,2,2,3,4,1,2,2,1,4,2,5,5,2,2,3,1,5,4,2,5,5,5,3,5,3,5,2,2,5,2,2,5,5,5,2,5,5,5,2,2,2,3,1,5,1,2]
 lucknowlabels = [2,1,1,2,2,2,5,4,3,1,5,5,5,3,2,2,5,5,4,3,4,5,4,2,5,5,5,5,2,2,3,2,2,5,3,2,5,2]
 mumbailabels = [2,2,2,3,5,1,2,5,2,5,2,2,2,4,2,3,2,3,3,1,1,2,5,5,3,3,2,5,3,5,5,5,2,5,5,5,2,5,2,5,3,2,5,2,5,3,2,1,5,5,2,1,2,2,2,1,5,5,2]
+bangalorelabels = [2,2,2,5,2,2,2,2,2,2,5,2,5,5,2,5,5,2,2,5,2,5,2,5]
 
 '''
 ['BHUBANESHWAR']
@@ -78,6 +79,7 @@ retailpriceseriesdelhi = getcenter('DELHI')
 retailpriceserieslucknow = getcenter('LUCKNOW')
 retailpriceseriesbhub = getcenter('BHUBANESHWAR')
 retailpriceseriespatna = getcenter('PATNA')
+retailpriceseriesbangalore = getcenter('BENGALURU')
 
 #[retailpriceseriesdelhi,retailpriceserieslucknow,retailpriceseriesmumbai] = whiten_series_list([retailpriceseriesdelhi,retailpriceserieslucknow,retailpriceseriesmumbai])
 
@@ -86,6 +88,9 @@ mandipriceseriesdelhi = getmandi('Azadpur',True)
 mandiarrivalseriesdelhi = getmandi('Azadpur',False)
 mandipriceserieslucknow = getmandi('Bahraich',True)
 mandiarrivalserieslucknow = getmandi('Bahraich',False)
+mandipriceseriesbangalore = getmandi('Bangalore',True)
+mandiarrivalseriesbangalore = getmandi('Bangalore',False)
+
 from averagemandi import mandipriceseries
 from averagemandi import mandiarrivalseries 
 mandipriceseriesmumbai = mandipriceseries
@@ -299,7 +304,7 @@ def overlapping(anomalies,s,e,labels):
   ans = False
   covered = []
   for i in range(0,len(anomalies)):
-    if(labels[i] == 2 or labels[i] == 5 or labels[i] == 3):  
+    if(labels[i] == 2 or labels[i] == 5):  
       if((anomalies[0][i]<=s and s<=anomalies[1][i]) or  (anomalies[0][i]<=e and e<=anomalies[1][i])):
         ans = True
         covered.append(i)
@@ -310,7 +315,7 @@ def calculate_actual(anomalies,s,e,labels):
   lbl = []
   durn = []
   for i in range(0,len(anomalies)):
-    if(labels[i] == 2 or labels[i] == 5 or labels[i] == 3):  
+    if(labels[i] == 2 or labels[i] == 5):  
       if(anomalies[0][i]<=s and s<=anomalies[1][i]):
       	endtime = datetime.strptime(anomalies[1][i],'%Y-%m-%d')
       	starttime = datetime.strptime(s,'%Y-%m-%d')
@@ -342,25 +347,29 @@ def overlapping_step2(anomalies,s,e,labels,pred_label):
 
 
 
-def first_step(align_m,align_d,align_l,data_m,data_d,data_l,anomaliesmumbai,anomaliesdelhi,anomalieslucknow, mumbailabelsnew,delhilabelsnew,lucknowlabelsnew,data_m2,data_d2,data_l2):
+def first_step(align_m,align_d,align_l,align_b,data_m,data_d,data_l,data_b,anomaliesmumbai,anomaliesdelhi,anomalieslucknow,anomaliesbangalore, mumbailabelsnew,delhilabelsnew,lucknowlabelsnew,bangalorelabelsnew,data_m2,data_d2,data_l2,data_b2):
 	
 	test_anomalies_delhi = generate_test()
 	test_anomalies_mumbai = generate_test()
 	test_anomalies_lucknow = generate_test()
-	test_anomaliesall = pd.concat([test_anomalies_delhi,test_anomalies_mumbai,test_anomalies_lucknow],ignore_index = True)
+	test_anomalies_bangalore = generate_test()
+	test_anomaliesall = pd.concat([test_anomalies_delhi,test_anomalies_mumbai,test_anomalies_lucknow,anomaliesbangalore],ignore_index = True)
 
 
 	test_delhi_anomalies_year = get_anomalies_year(test_anomalies_delhi)
 	test_mumbai_anomalies_year = get_anomalies_year(test_anomalies_mumbai)
 	test_lucknow_anomalies_year = get_anomalies_year(test_anomalies_lucknow)
-	test_anomalies_year = np.array(test_delhi_anomalies_year+test_mumbai_anomalies_year+test_lucknow_anomalies_year)
+	test_bangalore_anomalies_year = get_anomalies_year(test_anomalies_bangalore)
+	
+	test_anomalies_year = np.array(test_delhi_anomalies_year+test_mumbai_anomalies_year+test_lucknow_anomalies_year+test_bangalore_anomalies_year)
 
 
 	x1_test,y1_test = prepare(test_anomalies_delhi,[],data_d)
 	x2_test,y2_test = prepare(test_anomalies_mumbai,[],data_m)
 	x3_test,y3_test = prepare(test_anomalies_lucknow,[],data_l)
+	x4_test,y4_test = prepare(test_anomalies_bangalore,[],data_b)
 
-	xall_test = np.array(x1_test.tolist()+x2_test.tolist()+x3_test.tolist())
+	xall_test = np.array(x1_test.tolist()+x2_test.tolist()+x3_test.tolist()+x4_test.tolist())
 	# yall_test = np.array(y1_test.tolist()+y2_test.tolist()+y3_test.tolist())
 	
 	print len(x1_test),len(x2_test)
@@ -368,6 +377,7 @@ def first_step(align_m,align_d,align_l,data_m,data_d,data_l,anomaliesmumbai,anom
 	x1_test2,y1_test2 = prepare(test_anomalies_delhi,[],data_d2)
 	x2_test2,y2_test2 = prepare(test_anomalies_mumbai,[],data_m2)
 	x3_test2,y3_test2 = prepare(test_anomalies_lucknow,[],data_l2)
+	x4_test2,y4_test2 = prepare(test_anomalies_bangalore,[],data_b2)
 
 	
 	# normal_points_index = []
@@ -519,8 +529,34 @@ def first_step(align_m,align_d,align_l,data_m,data_d,data_l,anomaliesmumbai,anom
 				passed_step1_correctly.append(0)
 			i += 2*DAYS
 		i += 1
+
+	overlapped_bangalore = []
+	i=0	
+	while ( i < len(x4_test)):
+		parameter = cost_function(x4_test[i],test_anomalies_bangalore[0][i],test_anomalies_bangalore[1][i],DAYS)
+			
+		if(parameter > threshold):
+			passed += 1
+			xall_test_new.append(x4_test2[i])
+			# yall_test_new.append(-1)
+			label_locations.append(3)
+			anomalies_passed.append((test_anomalies_bangalore[0][i],test_anomalies_bangalore[1][i]))
+
+			# yall_test_new.append(yall_test[i])
+			test_anomalies_year_new.append(test_bangalore_anomalies_year[i])
+			ans, covered_bangalore = overlapping(anomaliesbangalore,test_anomalies_bangalore[0][i],test_anomalies_bangalore[1][i],bangalorelabelsnew)
+			overlapped_bangalore = overlapped_bangalore + covered_bangalore
+			actual = calculate_actual(anomaliesbangalore,test_anomalies_bangalore[0][i],test_anomalies_bangalore[1][i],bangalorelabelsnew)
+			yall_test_new.append(actual)
+			if( ans ):
+				overlapped += 1
+				passed_step1_correctly.append(1)
+			else:
+				passed_step1_correctly.append(0)
+			i += 2*DAYS
+		i += 1
 				
-	print "Anomalies covered in Lucknow -", (np.unique(np.array(overlapped_lucknow)))
+	print "Anomalies covered in bangalore -", (np.unique(np.array(overlapped_bangalore)))
 
 	print passed,overlapped, len(xall_test_new)
 
@@ -533,13 +569,16 @@ def first_step(align_m,align_d,align_l,data_m,data_d,data_l,anomaliesmumbai,anom
 	assert(len(label_locations) == len(xall_test_new))
 	return final_test_data, final_test_labels, label_locations, anomalies_passed, yall_test_new, final_test_info, final_test_loc
 
-def analyse(predicted, test_anomaliesall, label_locations, anomaliesdelhi, anomaliesmumbai, anomalieslucknow, delhilabelsnew, mumbailabelsnew, lucknowlabelsnew):
+def analyse(predicted, test_anomaliesall, label_locations, anomaliesdelhi, anomaliesmumbai, anomalieslucknow,anomaliesbangalore, delhilabelsnew, mumbailabelsnew, lucknowlabelsnew,bangalorelabelsnew):
 	delhi_hoarding = []
 	delhi_weather = []
 	mumbai_hoarding = []
 	mumbai_weather = []
 	lucknow_hoarding = []
 	lucknow_weather = []
+
+	bangalore_hoarding = []
+	bangalore_weather = []
 
 	false_positive_hoarding = 0
 	false_positive_weather = 0
@@ -583,16 +622,29 @@ def analyse(predicted, test_anomaliesall, label_locations, anomaliesdelhi, anoma
 				lucknow_hoarding = lucknow_hoarding + covered_lucknow_anomalies
 			elif(predicted[i] == 2):
 				lucknow_weather = lucknow_weather + covered_lucknow_anomalies
+		elif(label_locations[i] == 3):
+			ans, covered_bangalore_anomalies = overlapping_step2(anomaliesbangalore, test_anomaliesall[i][0], test_anomaliesall[i][1], bangalorelabelsnew, predicted[i])
+			# ans, covered_lucknow_anomalies = overlapping(anomalieslucknow, test_anomaliesall[i][0], test_anomaliesall[i][1], lucknowlabelsnew)
+
+			if(ans == True):
+				if(predicted[i] == 5):
+					false_positive_hoarding += 1
+				elif(predicted[i] == 2):
+					false_positive_weather += 1
+			if(predicted[i] == 5):
+				bangalore_hoarding = bangalore_hoarding + covered_bangalore_anomalies
+			elif(predicted[i] == 2):
+				bangalore_weather = bangalore_weather + covered_bangalore_anomalies
 
 	# delhi_hoarding = np.array(delhi_hoarding)
 	# delhi_weather = np.array(delhi_weather)
 	# mumbai_hoarding = np.array(mumbai_hoarding)
 	# mumbai_weather = np.array(mumbai_weather)
-	# lucknow_hoarding = np.array(lucknow_hoarding)
+	# bangalore_hoarding = np.array(lucknow_hoarding)
 	# lucknow_weather = np.array(lucknow_weather)
 
-	# print len(np.unique(delhi_hoarding))+len(np.unique(mumbai_hoarding))+len(np.unique(lucknow_hoarding))
-	# print len(np.unique(delhi_weather))+len(np.unique(mumbai_weather))+len(np.unique(lucknow_weather))
+	print len(np.unique(delhi_hoarding))+len(np.unique(mumbai_hoarding))+len(np.unique(lucknow_hoarding)+len(np.unique(bangalore_hoarding)))
+	print len(np.unique(delhi_weather))+len(np.unique(mumbai_weather))+len(np.unique(lucknow_weather))+len(np.unique(bangalore_weather))
 	print false_positive_weather, false_positive_hoarding
 
 
@@ -607,31 +659,36 @@ def get_score(xtrain,xtest,ytrain,ytest):
 	
 	return test_pred
 
-def train_test_function(align_m,align_d,align_l,data_m,data_d,data_l):
+def train_test_function(align_m,align_d,align_l,align_b,data_m,data_d,data_l,data_b):
 	# align = [1,2,3]
 
 	anomaliesmumbai = get_anomalies('data/anomaly/normal_h_w_mumbai.csv',align_m)
 	anomaliesdelhi = get_anomalies('data/anomaly/normal_h_w_delhi.csv',align_d)
 	anomalieslucknow = get_anomalies('data/anomaly/normal_h_w_lucknow.csv',align_l)
+	anomaliesbangalore = get_anomalies('data/anomaly/normal_h_w_bangalore.csv',align_l)
+
 	# anomaliesall = pd.concat([anomaliesdelhi,anomaliesmumbai,anomalieslucknow],ignore_index = True)
 	delhilabelsnew = newlabels(anomaliesdelhi,delhilabels)
 	lucknowlabelsnew = newlabels(anomalieslucknow,lucknowlabels)
 	mumbailabelsnew = newlabels(anomaliesmumbai,mumbailabels)
-	test_data, test_labels, label_locations, test_anomaliesall, actual_test_labels, test_info, test_loc = first_step(retailpriceseriesmumbai,retailpriceseriesdelhi,retailpriceserieslucknow,[retailpriceseriesmumbai],[retailpriceseriesdelhi],[retailpriceserieslucknow],anomaliesmumbai,anomaliesdelhi,anomalieslucknow,mumbailabelsnew,delhilabelsnew,lucknowlabelsnew,data_m,data_d,data_l)
-
+	bangalorelabelsnew = newlabels(anomaliesbangalore,bangalorelabels)
+	test_data, test_labels, label_locations, test_anomaliesall, actual_test_labels, test_info, test_loc = first_step(retailpriceseriesmumbai,retailpriceseriesdelhi,retailpriceserieslucknow,retailpriceseriesbangalore,[retailpriceseriesmumbai],[retailpriceseriesdelhi],[retailpriceserieslucknow],[retailpriceseriesbangalore],anomaliesmumbai,anomaliesdelhi,anomalieslucknow,anomaliesbangalore,mumbailabelsnew,delhilabelsnew,lucknowlabelsnew,bangalorelabelsnew,data_m,data_d,data_l,data_b)
 
 	x1,y1 = prepare(anomaliesdelhi,delhilabelsnew,data_d)
 	x2,y2 = prepare(anomaliesmumbai,mumbailabelsnew,data_m)
 	x3,y3 = prepare(anomalieslucknow,lucknowlabelsnew,data_l)
-	
+	x4,y4 = prepare(anomaliesbangalore,bangalorelabelsnew,data_b)
+
 
 	
 	delhi_anomalies_year = get_anomalies_year(anomaliesdelhi)
 	mumbai_anomalies_year = get_anomalies_year(anomaliesmumbai)
 	lucknow_anomalies_year = get_anomalies_year(anomalieslucknow)
-	xall = np.array(x1.tolist()+x2.tolist()+x3.tolist())
-	yall = np.array(y1.tolist()+y2.tolist()+y3.tolist())
-	yearall = np.array(delhi_anomalies_year+mumbai_anomalies_year+lucknow_anomalies_year)
+	bangalore_anomalies_year = get_anomalies_year(anomaliesbangalore)
+
+	xall = np.array(x1.tolist()+x2.tolist()+x3.tolist()+x4.tolist())
+	yall = np.array(y1.tolist()+y2.tolist()+y3.tolist()+y4.tolist())
+	yearall = np.array(delhi_anomalies_year+mumbai_anomalies_year+lucknow_anomalies_year+bangalore_anomalies_year)
 	
 	xall_new = []
 	yall_new = []
@@ -686,7 +743,7 @@ def train_test_function(align_m,align_d,align_l,data_m,data_d,data_l):
 	assert(len(predicted) == len(test_anomaliesall))
 	assert(len(actual_info) == len(actual_loc))
 	assert(len(actual_info)==len(predicted))
-	analyse(predicted, test_anomaliesall, label_locations, anomaliesdelhi, anomaliesmumbai, anomalieslucknow, delhilabelsnew, mumbailabelsnew, lucknowlabelsnew)
+	analyse(predicted, test_anomaliesall, label_locations, anomaliesdelhi, anomaliesmumbai, anomalieslucknow,anomaliesbangalore, delhilabelsnew, mumbailabelsnew, lucknowlabelsnew,bangalorelabelsnew)
 	# print len(predicted), len(actual_labels), "Line 652"
 	# assert(len(predicted) == len(actual_test_labels))
 	actual_test_labels_new = []
@@ -711,20 +768,23 @@ def train_test_function(align_m,align_d,align_l,data_m,data_d,data_l):
 
 			elif(actual_loc[x] == 2):
 				test_parameter = cost_function2(retailpriceserieslucknow[actual_info[x][0]:actual_info[x][1]],2*DAYS+1)
+			elif(actual_loc[x] == 3):
+				test_parameter = cost_function2(retailpriceseriesbangalore[actual_info[x][0]:actual_info[x][1]],2*DAYS+1)	
 			else:
 				print "Some error"
 			if(test_parameter < 300 and test_parameter > 0):
 				temp_count += 1
-			# if(actual_labels[x] == 2):
-			# 	count_weather += 1
-			# elif(actual_labels[x] == 5):
-			# 	count_hoarding += 1
+			if(actual_labels[x] == 2):
+				count_weather += 1
+			elif(actual_labels[x] == 5):
+				count_hoarding += 1
 			# elif(actual_labels[x] == 3):
 			# 	count_inflation += 1
 	print count_hoarding, count_weather, count_inflation,temp_count
 	# exit()
 	# actual_labels= np.array(actual_labels)
 	# print len(actual_labels)
+	exit()
 	# print sum(predicted == actual_labels)
 
 
@@ -750,7 +810,7 @@ def train_test_function(align_m,align_d,align_l,data_m,data_d,data_l):
 # train_test_function(retailpriceseriesmumbai,retailpriceseriesdelhi,retailpriceserieslucknow,[retailpriceseriesmumbai],[retailpriceseriesdelhi],[retailpriceserieslucknow])
 # train_test_function(retailpriceseriesmumbai,retailpriceseriesdelhi,retailpriceserieslucknow,[mandipriceseriesmumbai],[mandipriceseriesdelhi],[mandipriceserieslucknow])
 # train_test_function(retailpriceseriesmumbai,retailpriceseriesdelhi,retailpriceserieslucknow,[retailpriceseriesmumbai,mandipriceseriesmumbai],[retailpriceseriesdelhi,mandipriceseriesdelhi],[retailpriceserieslucknow,mandipriceserieslucknow])
-train_test_function(retailpriceseriesmumbai,retailpriceseriesdelhi,retailpriceserieslucknow,[retailpriceseriesmumbai-mandipriceseriesmumbai,mandiarrivalseriesmumbai],[retailpriceseriesdelhi-mandipriceseriesdelhi,mandiarrivalseriesdelhi],[retailpriceserieslucknow-mandipriceserieslucknow,mandiarrivalserieslucknow])
+train_test_function(retailpriceseriesmumbai,retailpriceseriesdelhi,retailpriceserieslucknow,retailpriceseriesbangalore,[retailpriceseriesmumbai-mandipriceseriesmumbai,mandiarrivalseriesmumbai],[retailpriceseriesdelhi-mandipriceseriesdelhi,mandiarrivalseriesdelhi],[retailpriceserieslucknow-mandipriceserieslucknow,mandiarrivalserieslucknow],[retailpriceseriesbangalore-mandipriceseriesbangalore,mandiarrivalseriesbangalore])
 # train_test_function(retailpriceseriesmumbai,retailpriceseriesdelhi,retailpriceserieslucknow,[retailpriceseriesmumbai-mandipriceseriesmumbai],[retailpriceseriesdelhi-mandipriceseriesdelhi],[retailpriceserieslucknow-mandipriceserieslucknow])
 # train_test_function(retailpriceseriesmumbai,retailpriceseriesdelhi,retailpriceserieslucknow,[retailpriceseriesmumbai,mandiarrivalseriesmumbai],[retailpriceseriesdelhi,mandiarrivalseriesdelhi],[retailpriceserieslucknow,mandiarrivalserieslucknow])
 # train_test_function(retailpriceseriesmumbai,retailpriceseriesdelhi,retailpriceserieslucknow,[retailpriceseriesmumbai,mandipriceseriesmumbai,mandiarrivalseriesmumbai],[retailpriceseriesdelhi,mandipriceseriesdelhi,mandiarrivalseriesdelhi],[retailpriceserieslucknow,mandipriceserieslucknow,mandiarrivalserieslucknow])

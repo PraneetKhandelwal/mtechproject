@@ -1,3 +1,6 @@
+# this code creates the normal period for all the centers and stores in the file named 'normal h w <centername>.csv'
+# The normal periods do not overlap with any other anomalies and have a threshold on the difference between maximum and minimum retail price during the 43 day window.
+
 from datetime import datetime
 import pandas as pd
 import numpy as np
@@ -26,8 +29,9 @@ from averageretail import getcenter
 retailpriceseriesmumbai = getcenter('MUMBAI')
 retailpriceseriesdelhi = getcenter('DELHI')
 retailpriceserieslucknow = getcenter('LUCKNOW')
-retailpriceseriesbhub = getcenter('BHUBANESHWAR')
+# retailpriceseriesbhub = getcenter('BHUBANESHWAR')
 retailpriceseriespatna = getcenter('PATNA')
+retailpriceseriesbangalore = getcenter('BENGALURU')
 # [retailpriceseriesbhub,retailpriceseriesdelhi,retailpriceserieslucknow,retailpriceseriesmumbai,retailpriceseriespatna] = whiten_series_list([retailpriceseriesbhub,retailpriceseriesdelhi,retailpriceserieslucknow,retailpriceseriesmumbai,retailpriceseriespatna])
 #[retailpriceseriesdelhi,retailpriceserieslucknow,retailpriceseriesmumbai] = whiten_series_list([retailpriceseriesdelhi,retailpriceserieslucknow,retailpriceseriesmumbai])
 
@@ -39,6 +43,9 @@ mandipriceseriesdelhi = getmandi('Azadpur',True)
 mandiarrivalseriesdelhi = getmandi('Azadpur',False)
 mandipriceserieslucknow = getmandi('Devariya',True)
 mandiarrivalserieslucknow = getmandi('Devariya',False)
+
+mandipriceseriesbangalore = getmandi('Bangalore',True)
+mandiarrivalseriesbangalore = getmandi('Bangalore',False)
 from averagemandi import mandipriceseries
 from averagemandi import mandiarrivalseries 
 # [mandipriceseriesdelhi,mandipriceserieslucknow,mandipriceseriesmumbai] = whiten_series_list([mandipriceseriesdelhi,mandipriceserieslucknow,mandipriceseries])
@@ -55,6 +62,8 @@ anomaliesmumbai = get_anomalies('data/anomaly/mumbai.csv')
 anomaliesdelhi = get_anomalies('data/anomaly/delhi.csv')
 anomalieslucknow = get_anomalies('data/anomaly/lucknow.csv')
 
+anomaliesbangalore = get_anomalies('data/anomaly/bangalore.csv')
+
 # Labelling 
 # Transport:  1
 # Weather:  2
@@ -65,6 +74,7 @@ anomalieslucknow = get_anomalies('data/anomaly/lucknow.csv')
 delhilabels = [2,4,1,3,1,2,2,2,3,4,1,2,2,1,4,2,5,5,2,2,3,1,5,4,2,5,5,5,3,5,3,5,2,2,5,2,2,5,5,5,2,5,5,5,2,2,2,3,1,5,1,2]
 lucknowlabels = [2,1,1,2,2,2,5,4,3,1,5,5,5,3,2,2,5,5,4,3,4,5,4,2,5,5,5,5,2,2,3,2,2,5,3,2,5,2]
 mumbailabels = [2,2,2,3,5,1,2,5,2,5,2,2,2,4,2,3,2,3,3,1,1,2,5,5,3,3,2,5,3,5,5,5,2,5,5,5,2,5,2,5,3,2,5,2,5,3,2,1,5,5,2,1,2,2,2,1,5,5,2]
+bangalorelabels = [2,2,2,5,2,2,2,2,2,2,5,2,5,5,2,5,5,2,2,5,2,5,2,5]
 
 def display_anomalies(anomalieslist, anomaly, labels):
   count = {'01':0,'02':0,'03':0,'04':0,'05':0,'06':0,'07':0,'08':0,'09':0,'10':0,'11':0,'12':0}
@@ -73,7 +83,7 @@ def display_anomalies(anomalieslist, anomaly, labels):
       count[anomalieslist[0][i][5:7]] = count[anomalieslist[0][i][5:7]] + 1
   return count
 
-
+# Function to check that the period does or does not overlap with any anomaly
 def overlapping(anomalies,s,e,labels):
   startdate = datetime.strptime(s,'%Y-%m-%d')
   # if(startdate.month >=2 and startdate.month <= 7):
@@ -84,6 +94,7 @@ def overlapping(anomalies,s,e,labels):
         return True
   return False
 
+# function which iterates over the entire duration and tries to generate new normal periods
 def findnormal_restricted(anomalies,series,labels):
   sdate = []
   edate = []
@@ -126,6 +137,7 @@ def createnormalfile(path,anomaliesmumbai,retailpriceseriesmumbai,labels):
 createnormalfile('data/anomaly/normal_h_w_mumbai.csv',anomaliesmumbai,retailpriceseriesmumbai,mumbailabels)
 createnormalfile('data/anomaly/normal_h_w_delhi.csv',anomaliesdelhi,retailpriceseriesdelhi,delhilabels)
 createnormalfile('data/anomaly/normal_h_w_lucknow.csv',anomalieslucknow,retailpriceserieslucknow,lucknowlabels)
+createnormalfile('data/anomaly/normal_h_w_bangalore.csv',anomaliesbangalore,retailpriceseriesbangalore,bangalorelabels)
 
 
 

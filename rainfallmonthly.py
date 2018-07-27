@@ -1,3 +1,4 @@
+# This file contains code for getting rainfall data, average rainfall data for different regions in India
 from datetime import datetime
 import pandas as pd
 import numpy as np

@@ -1,3 +1,4 @@
+# This file calculates z score for all mandis and sorts them 
 from datetime import datetime
 import pandas as pd
 import numpy as np

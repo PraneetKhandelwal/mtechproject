@@ -27,7 +27,7 @@ dict_statename_statecode = state_info.groupby('state')['statecode'].apply(list).
 START = CONSTANTS['STARTDATE']
 END = CONSTANTS['ENDDATE']
 
-
+# Function to load the Mandi data from the csv files and remove error values
 def load_wholesale_data():
   WP = 7
   WA = 2
@@ -77,6 +77,8 @@ imagenames = [f for f in listdir('plots/bigmandis10')]
 # WA = 2
 wholeSalePA = load_wholesale_data()
 
+
+# function to get the mandi arrival series or mandi price series for a particular mandiname based on whether the price variable if False or True
 def getmandi(mandiname,price):
   if price:
     switch = 7

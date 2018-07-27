@@ -1,0 +1,4 @@
+This folder contains all the files related to the timeseries modelling using ARIMA models. 
+The file arima.R contains the required code.
+Apart from this, it contains two files for each times series, one for training and other for testing as the naming suggests.
+You will require R software to run the script. Also the packages mentioned in the arima.R need to installed before running the code.

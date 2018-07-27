@@ -1,3 +1,4 @@
+# This files contains code for unsupervised learning performed to group all the anomalous events into certain number of categories
 from datetime import timedelta
 from datetime import datetime
 import pandas as pd

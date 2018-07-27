@@ -1,3 +1,4 @@
+# This file checks the different mandis for the selection criteria mentioned in the report
 from datetime import datetime
 import pandas as pd
 import numpy as np
@@ -73,13 +74,17 @@ nagpurmandis = [1053, 1579, 1227, 379,667]
 
 lnames = ['Gonda','Lakhimpur','Sitapur' ,'Devariya','Bijnaur' ,'Lucknow' ,'Chandoli' ,'Bahraich' , 'Faizabad' ]
 
-# for name in lnames:
-# 	# print mcode
-# 	# name = dict_mandicode_mandiname[mcode][0]
-# 	series = getmandi2(name,False)
-# 	r,m = checkcriteria(series)
-# 	if r > 0.50:
-# 		print name,r,m, series.mean()
+bnames = ['Kolar','Bagepalli','Madhugiri','Gowribidanoor','V.Kota Mkt.Yard','Tumkur','Challakere','Ramanagara','Rayadurg','Bangalore','Bangarpet','Pavagada','Channapatana','Malur','Hoskote','Chintamani','Chickkaballapura','Mulabagilu','Kanakapura','Srinivasapur','Harihara','Doddaballa Pur']
+bnames2 = ['Kanakapura','Srinivasapur','Harihara','Doddaballa Pur']
+bnames3 = ['Bangalore','Azadpur','Bahraich','Pune','Lasalgaon']
+
+for name in bnames3:
+	# print mcode
+	# name = dict_mandicode_mandiname[mcode][0]
+	series = getmandi2(name,False)
+	r,m = checkcriteria(series)
+	
+	print name,r,m, series.mean()
 
 
 '''

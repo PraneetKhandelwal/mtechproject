@@ -1,3 +1,4 @@
+# This file contains various functions required to plot different types of graphs for the qualitative analysis
 from datetime import datetime
 import pandas as pd
 import numpy as np

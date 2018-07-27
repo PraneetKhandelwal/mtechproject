@@ -1,4 +1,4 @@
-
+# Code to upload the retail price data for various centers
 from datetime import datetime
 import pandas as pd
 import numpy as np
@@ -61,7 +61,7 @@ def rwhiten(series):
   series = series.apply(lambda row: np.dot(V, row.T).T, axis=1)
   return series
 
-
+# Main function to load the retail data and prune the 0 values
 def load_retail_data():
   RP = 2
   CENTREID = 1
@@ -90,7 +90,7 @@ def CreateCentreSeries(Centre, RetailPandas):
   return rc * 100
 
 
-
+# Removes Nan Value in the series
 def RemoveNaNFront(series):
   index = 0
   while True:
@@ -119,6 +119,7 @@ for cid in relevant_centres_id :
 from os import listdir
 imagenames = [f for f in listdir('plots/bigmandis10')]
 
+# Function to get interpolated retail price series for the particular center
 def getcenter(centrename):
   code = dict_centrename_centreid[centrename][0]
   series = CreateCentreSeries(code,retailP)

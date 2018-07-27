@@ -1,0 +1,16 @@
+1. This folder contains information about anomalies observed at each center. It also contains the period and labels for those anomalies.
+2. Files <Center> News.xlsx contain the newspaper articles for the period 2006 to 2014. Files <onion_center_anomalies.csv contain the anomalies for the period 2015 to 2017.
+3. File low_price.ods contain the instances of low price during the entire duration for Mumbai.
+4. Files <center.csv> contain the original anomaly periods identified from newspaper articles.
+5. Files <normal_h_w_center.csv> contain the anomalies along with manually created normal periods using find_normal_step2.py.
+6. Files <normal_h_w_semi_center.csv> contain the anomalies along with manually created normal periods for the semi supervised setting using find_normal_semi_supervised.py.
+7. Files <semi_labels_center.csv> contain the labels for each anomaly in the file <normal_h_w_semi_center.csv> which were manually curated after studying each anomaly.
+
+Index for labels:
+(i) 0 : Surely not a anomaly
+(ii) 1 : Surely an anomaly
+(iii) -1 : Unlabelled case for semi supervised setting
+(iv) -5 : Randomly left out events out of the semi supervised setting in order to maintain the ratio of Labelled and unlabelled scenarios in the semi supervised setting.
+(v) 7 : Initially fuel/transport/ inflation anomaly but no longer in consideration because of their removal from quantitative analysis.
+(vi) 2 : Only for step2_labels_center.csv : Marked as hoarding anomaly initially but revised labelled marked it as unlabelled because it did not seem as anomaly.
+(vii) -2 : Only for step2_labels_center.csv : Marked as weather anomaly initially but revised labelled marked it as unlabelled because it did not seem as anomaly.

@@ -1,3 +1,5 @@
+# File to read the crude oil prices from the csv and convert in a usable format
+
 from datetime import datetime
 import pandas as pd
 import numpy as np

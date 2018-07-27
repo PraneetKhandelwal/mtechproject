@@ -1,3 +1,5 @@
+# This file contains code for plotting all the observed anomalies based on the retail an mandi price during that period
+# It also performs a linear regression between those anomalies.
 from sklearn import linear_model
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.utils import shuffle

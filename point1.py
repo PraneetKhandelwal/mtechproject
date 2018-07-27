@@ -1,3 +1,5 @@
+# This file contains the code for identifying disturbances in rainfall which would complement the qualitative analysis. 
+# Here we evaluated each year by using certain thresholds and tried to see if we could classify an entire year as some kind of weather or hoarding anomaly.
 from datetime import datetime
 import pandas as pd
 import numpy as np
