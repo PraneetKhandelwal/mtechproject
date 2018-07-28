@@ -1,13 +1,13 @@
-1. This folder all the scripts used for this project.
-2. You will need python installed in your system to run these scripts.
-3. The files datadownload.py, script_crude_oil.py, script_export.py, script_fuel_price.py, downloadnewspaperdata.py are used to download required data.
-	(i) datadownlaod.py: For downlaoding data from agamarknet website
-	(ii) script_crude_oil.py: Downloading crude oil data
-	(iii) script_export.py: Downloading export of onions data
-	(iv) script_fuel_price.py: Downloading fuel price data 
-	(v) downloadnewspaperdata.py: Downloading newspaper data from times of india archives
-4. The files average_export.py, averagemandi.py, averagerainfall.py, averageretail.py, cpimonthlyseries.py, fuelprice.py, oilmonthlyseries.py, rainfallmonthly.py are used to read the downloaded and make them available in a usable format.
-5. The files find_normal_step2.py and find_normal_semi_supervised.py are used for creating normal periods for general scenario and semi supervised settign respectively.
-6. The files semi_supervised.py, step1_binary.py, step1_first_principle.py, step2_multi.py, supervised_step2.py and combined_step1_step2.py are used for performing quantitative analysis.
-7. The files relation_mandis.py, error_analysis_step1.py, error_analysis_step2.py, mandicriteria.py, linear_reg2.py are used for performing different qualitative analysis.
+1. This folder all the scripts used for this project.<br>
+2. You will need python installed in your system to run these scripts.<br>
+3. The files datadownload.py, script_crude_oil.py, script_export.py, script_fuel_price.py, downloadnewspaperdata.py are used to download required data.<br>
+	(i) datadownlaod.py: For downlaoding data from agamarknet website<br>
+	(ii) script_crude_oil.py: Downloading crude oil data<br>
+	(iii) script_export.py: Downloading export of onions data<br>
+	(iv) script_fuel_price.py: Downloading fuel price data <br>
+	(v) downloadnewspaperdata.py: Downloading newspaper data from times of india archives<br>
+4. The files average_export.py, averagemandi.py, averagerainfall.py, averageretail.py, cpimonthlyseries.py, fuelprice.py, oilmonthlyseries.py, rainfallmonthly.py are used to read the downloaded and make them available in a usable format. <br>
+5. The files find_normal_step2.py and find_normal_semi_supervised.py are used for creating normal periods for general scenario and semi supervised settign respectively.<br>
+6. The files semi_supervised.py, step1_binary.py, step1_first_principle.py, step2_multi.py, supervised_step2.py and combined_step1_step2.py are used for performing quantitative analysis.<br>
+7. The files relation_mandis.py, error_analysis_step1.py, error_analysis_step2.py, mandicriteria.py, linear_reg2.py are used for performing different qualitative analysis.<br>
 8. Use the document strings provided with each function to get the idea of the working
